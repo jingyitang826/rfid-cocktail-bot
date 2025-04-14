@@ -1,0 +1,431 @@
+<testset xmlns="http://cpee.org/ns/properties/2.0">
+  <executionhandler>ruby</executionhandler>
+  <dataelements>
+    <order_history>[]</order_history>
+    <order_list>[]</order_list>
+    <serve_order/>
+    <drink_placement>[0,0,0,0]</drink_placement>
+    <glass_x>0</glass_x>
+    <glass_y>0</glass_y>
+    <available_position>0</available_position>
+  </dataelements>
+  <endpoints>
+    <timeout>https://cpee.org/services/timeout.php</timeout>
+    <subprocess>https://cpee.org/flow/start/url/</subprocess>
+    <wait_order>https://lehre.bpm.in.tum.de/ports/9090/order/subscribe</wait_order>
+    <find_position>https://lehre.bpm.in.tum.de/ports/9090/find_position</find_position>
+    <order_finish>https://lehre.bpm.in.tum.de/ports/9090/order_finish</order_finish>
+    <server_refresh>https://lehre.bpm.in.tum.de/ports/9090/server_refresh</server_refresh>
+    <cobot_data_0>https://lab.bpm.in.tum.de/ur5/kanne/registers/input/int/0</cobot_data_0>
+    <cobot_data_1>https://lab.bpm.in.tum.de/ur5/kanne/registers/input/int/1</cobot_data_1>
+    <cobot_data_2>https://lab.bpm.in.tum.de/ur5/kanne/registers/input/int/2</cobot_data_2>
+    <serve_drink>https://lab.bpm.in.tum.de/ur5/kanne/programs/ordering_rfid/serve_drink.urp/wait</serve_drink>
+  </endpoints>
+  <attributes>
+    <guarded>none</guarded>
+    <modeltype>CPEE</modeltype>
+    <theme>extended</theme>
+    <guarded_id/>
+    <info>Main_process_withRobot</info>
+    <creator>Christine Ashcreek</creator>
+    <author>Christine Ashcreek</author>
+    <model_uuid>a3f0de09-85d9-4908-ab39-f599c6394285</model_uuid>
+    <model_version/>
+    <design_dir>Teaching.dir/Prak.dir/TUM-Prak-24-WS.dir/Jingyi Tang.dir/restructured.dir</design_dir>
+    <design_stage>development</design_stage>
+  </attributes>
+  <description>
+    <description xmlns="http://cpee.org/ns/description/1.0">
+      <call id="a7" endpoint="server_refresh">
+        <parameters>
+          <label>Refresh the Server</label>
+          <method>:post</method>
+          <arguments/>
+        </parameters>
+        <annotations>
+          <_generic/>
+          <_timing>
+            <_timing_weight/>
+            <_timing_avg/>
+            <explanations/>
+          </_timing>
+          <_shifting>
+            <_shifting_type>Duration</_shifting_type>
+          </_shifting>
+          <_context_data_analysis>
+            <probes/>
+            <ips/>
+          </_context_data_analysis>
+          <report>
+            <url/>
+          </report>
+          <_notes>
+            <_notes_general/>
+          </_notes>
+        </annotations>
+        <documentation>
+          <input/>
+          <output/>
+          <implementation>
+            <description/>
+          </implementation>
+        </documentation>
+      </call>
+      <parallel wait="-1" cancel="last">
+        <parallel_branch>
+          <call id="a2" endpoint="wait_order">
+            <parameters>
+              <label> Wait for Orders</label>
+              <method>:post</method>
+              <arguments/>
+            </parameters>
+            <code>
+              <prepare/>
+              <finalize output="result"/>
+              <update output="result">if result['order_detail']
+  data.order_list.push(result['order_detail'])
+end</update>
+              <rescue output="result"/>
+            </code>
+            <annotations>
+              <_generic/>
+              <_timing>
+                <_timing_weight/>
+                <_timing_avg/>
+                <explanations/>
+              </_timing>
+              <_shifting>
+                <_shifting_type>Duration</_shifting_type>
+              </_shifting>
+              <_context_data_analysis>
+                <probes/>
+                <ips/>
+              </_context_data_analysis>
+              <report>
+                <url/>
+              </report>
+              <_notes>
+                <_notes_general/>
+              </_notes>
+            </annotations>
+            <documentation>
+              <input/>
+              <output/>
+              <implementation>
+                <description/>
+              </implementation>
+              <code>
+                <description/>
+              </code>
+            </documentation>
+          </call>
+        </parallel_branch>
+        <parallel_branch>
+          <loop mode="pre_test" condition="true">
+            <choose mode="exclusive">
+              <alternative condition="data.order_list.length&gt;0">
+                <_probability>
+                  <_probability_min/>
+                  <_probability_max/>
+                  <_probability_avg/>
+                </_probability>
+                <manipulate id="a1" label="Fulfill the First Order">data.serve_order = data.order_list[0]</manipulate>
+                <call id="a3" endpoint="timeout">
+                  <parameters>
+                    <label>Timeout Simulates Preparing the Drink</label>
+                    <method>:post</method>
+                    <arguments>
+                      <timeout>10</timeout>
+                    </arguments>
+                  </parameters>
+                  <annotations>
+                    <_generic/>
+                    <_timing>
+                      <_timing_weight/>
+                      <_timing_avg/>
+                      <explanations/>
+                    </_timing>
+                    <_shifting>
+                      <_shifting_type>Duration</_shifting_type>
+                    </_shifting>
+                    <_context_data_analysis>
+                      <probes/>
+                      <ips/>
+                    </_context_data_analysis>
+                    <report>
+                      <url/>
+                    </report>
+                    <_notes>
+                      <_notes_general/>
+                    </_notes>
+                  </annotations>
+                  <documentation>
+                    <input/>
+                    <output/>
+                    <implementation>
+                      <description/>
+                    </implementation>
+                  </documentation>
+                </call>
+                <call id="a4" endpoint="find_position">
+                  <parameters>
+                    <label>Find an Available position</label>
+                    <method>:post</method>
+                    <arguments>
+                      <serve_order>!data.serve_order</serve_order>
+                    </arguments>
+                  </parameters>
+                  <code>
+                    <prepare/>
+                    <finalize output="result">if result['available_position']
+  data.drink_placement = result['drink_placement']
+  data.glass_x = result['glass_x']
+  data.glass_y = result['glass_y']
+  data.available_position = result['available_position']
+end</finalize>
+                    <update output="result"/>
+                    <rescue output="result"/>
+                  </code>
+                  <annotations>
+                    <_generic/>
+                    <_timing>
+                      <_timing_weight/>
+                      <_timing_avg/>
+                      <explanations/>
+                    </_timing>
+                    <_shifting>
+                      <_shifting_type>Duration</_shifting_type>
+                    </_shifting>
+                    <_context_data_analysis>
+                      <probes/>
+                      <ips/>
+                    </_context_data_analysis>
+                    <report>
+                      <url/>
+                    </report>
+                    <_notes>
+                      <_notes_general/>
+                    </_notes>
+                  </annotations>
+                  <documentation>
+                    <input/>
+                    <output/>
+                    <implementation>
+                      <description/>
+                    </implementation>
+                    <code>
+                      <description/>
+                    </code>
+                  </documentation>
+                </call>
+                <call id="a8" endpoint="cobot_data_0">
+                  <parameters>
+                    <label>Tell Robot: Glass Position x</label>
+                    <method>:put</method>
+                    <arguments>
+                      <value>!data.glass_x</value>
+                    </arguments>
+                  </parameters>
+                  <annotations>
+                    <_generic/>
+                    <_timing>
+                      <_timing_weight/>
+                      <_timing_avg/>
+                      <explanations/>
+                    </_timing>
+                    <_shifting>
+                      <_shifting_type>Duration</_shifting_type>
+                    </_shifting>
+                    <_context_data_analysis>
+                      <probes/>
+                      <ips/>
+                    </_context_data_analysis>
+                    <report>
+                      <url/>
+                    </report>
+                    <_notes>
+                      <_notes_general/>
+                    </_notes>
+                  </annotations>
+                  <documentation>
+                    <input/>
+                    <output/>
+                    <implementation>
+                      <description/>
+                    </implementation>
+                  </documentation>
+                </call>
+                <call id="a5" endpoint="cobot_data_1">
+                  <parameters>
+                    <label>Tell Robot: Glass Position y</label>
+                    <method>:put</method>
+                    <arguments>
+                      <value>!data.glass_y</value>
+                    </arguments>
+                  </parameters>
+                  <annotations>
+                    <_generic/>
+                    <_timing>
+                      <_timing_weight/>
+                      <_timing_avg/>
+                      <explanations/>
+                    </_timing>
+                    <_shifting>
+                      <_shifting_type>Duration</_shifting_type>
+                    </_shifting>
+                    <_context_data_analysis>
+                      <probes/>
+                      <ips/>
+                    </_context_data_analysis>
+                    <report>
+                      <url/>
+                    </report>
+                    <_notes>
+                      <_notes_general/>
+                    </_notes>
+                  </annotations>
+                  <documentation>
+                    <input/>
+                    <output/>
+                    <implementation>
+                      <description/>
+                    </implementation>
+                  </documentation>
+                </call>
+                <call id="a9" endpoint="cobot_data_2">
+                  <parameters>
+                    <label>Tell Robot: Output Position</label>
+                    <method>:put</method>
+                    <arguments>
+                      <value>!data.available_position</value>
+                    </arguments>
+                  </parameters>
+                  <annotations>
+                    <_generic/>
+                    <_timing>
+                      <_timing_weight/>
+                      <_timing_avg/>
+                      <explanations/>
+                    </_timing>
+                    <_shifting>
+                      <_shifting_type>Duration</_shifting_type>
+                    </_shifting>
+                    <_context_data_analysis>
+                      <probes/>
+                      <ips/>
+                    </_context_data_analysis>
+                    <report>
+                      <url/>
+                    </report>
+                    <_notes>
+                      <_notes_general/>
+                    </_notes>
+                  </annotations>
+                  <documentation>
+                    <input/>
+                    <output/>
+                    <implementation>
+                      <description/>
+                    </implementation>
+                  </documentation>
+                </call>
+                <call id="a10" endpoint="serve_drink">
+                  <parameters>
+                    <label>Cobot Serve the Drink</label>
+                    <method>:put</method>
+                    <arguments/>
+                  </parameters>
+                  <annotations>
+                    <_generic/>
+                    <_timing>
+                      <_timing_weight/>
+                      <_timing_avg/>
+                      <explanations/>
+                    </_timing>
+                    <_shifting>
+                      <_shifting_type>Duration</_shifting_type>
+                    </_shifting>
+                    <_context_data_analysis>
+                      <probes/>
+                      <ips/>
+                    </_context_data_analysis>
+                    <report>
+                      <url/>
+                    </report>
+                    <_notes>
+                      <_notes_general/>
+                    </_notes>
+                  </annotations>
+                  <documentation>
+                    <input/>
+                    <output/>
+                    <implementation>
+                      <description/>
+                    </implementation>
+                  </documentation>
+                </call>
+                <call id="a6" endpoint="order_finish">
+                  <parameters>
+                    <label>Order finished</label>
+                    <method>:post</method>
+                    <arguments/>
+                  </parameters>
+                  <code>
+                    <prepare/>
+                    <finalize output="result">data.order_history.push(data.serve_order)
+data.order_list.slice!(0)
+data.serve_order = {}</finalize>
+                    <update output="result"/>
+                    <rescue output="result"/>
+                  </code>
+                  <annotations>
+                    <_generic/>
+                    <_timing>
+                      <_timing_weight/>
+                      <_timing_avg/>
+                      <explanations/>
+                    </_timing>
+                    <_shifting>
+                      <_shifting_type>Duration</_shifting_type>
+                    </_shifting>
+                    <_context_data_analysis>
+                      <probes/>
+                      <ips/>
+                    </_context_data_analysis>
+                    <report>
+                      <url/>
+                    </report>
+                    <_notes>
+                      <_notes_general/>
+                    </_notes>
+                  </annotations>
+                  <documentation>
+                    <input/>
+                    <output/>
+                    <implementation>
+                      <description/>
+                    </implementation>
+                    <code>
+                      <description/>
+                    </code>
+                  </documentation>
+                </call>
+              </alternative>
+              <otherwise/>
+            </choose>
+            <_probability>
+              <_probability_min/>
+              <_probability_max/>
+              <_probability_avg/>
+            </_probability>
+          </loop>
+        </parallel_branch>
+      </parallel>
+    </description>
+  </description>
+  <transformation>
+    <description type="copy"/>
+    <dataelements type="none"/>
+    <endpoints type="none"/>
+  </transformation>
+</testset>
