@@ -1,13 +1,13 @@
 # Input Module Documentation
 
-This folder contains everything needed to run and assemble the **Input** portion of the RFID-Cocktail-Bot:  
+This folder contains everything needed to run and assemble the **Input** mechanism of the RFID-Cocktail-Bot:  
 - **Firmware** for the ESP32 (`Input.cpp`)  
 - **3D model** for the input basket (`Input_Basket.3mf`)  
-- **Wiring & Pin Mapping**  
+- **Wiring & Pin Mapping** (see below)
 
 ## 1. Introduction
 
-The **Input Module** handles ingredient selection via RFID tokens, displays status on an OLED, and sends button-press or tag data to the server. It's mounted in a 3D-printed basket and all sensors/controllers wire back to the ESP32.
+The **Input Module** handles ingredient selection via RFID tags, displays status on an OLED display, and sends button-press and tag data to the server. A SparkFun Simultaneous RFID Reader – M7E Hecto is used for scanning the RFID tags. The RFID reader is wired to an ESP32, which handles the server connection. A red and a green button are also wired to the ESP32. Pressing the green button confirms a cocktail order and sends it to the server; pressing the red button discards the order, allowing a new one to be placed. An OLED display, wired to the ESP32, shows the scanned ingredients and displays the order status. All components are mounted to a 3D-printed basket, which is screwed to a container, as shown in the pictures in the 'Images' folder.
 
 ## 2. Firmware
 
@@ -21,7 +21,7 @@ The **Input Module** handles ingredient selection via RFID tokens, displays stat
 
 ### 2.2 Dependencies
 
-This sketch is built with **PlatformIO** and uses:
+This sketch is built with **PlatformIO** and uses the following libaries:
 - `SparkFun_UHF_RFID_Reader`  
 - `WiFi`  
 - `HTTPClient`  
@@ -63,7 +63,7 @@ const unsigned long uploadInterval = 100;
 ### 2.4 Build & Flash
 
 1. Open the project in PlatformIO.
-2. Run `pio run --target upload`.
+2. Upload the firmeware to a ESP32.
 
 **Hint**: to flash the ESP32, you may have to press and hold the BOOT button (depending on your board's config).
 
