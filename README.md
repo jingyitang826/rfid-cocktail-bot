@@ -5,7 +5,8 @@
 ## System Architecture
 
 - **RFID Tokens**: Represent individual drink ingredients.
-- **LED Display Module (Input)**: Shows selected ingredients, confirmed order number, and the status of drink placements.
+- **Ordering Station (Input)**: Shows selected ingredients, confirmed order number, and the status of drink placements.
+- **Pick-Up Station (Output)**: Shows the free output spaces, the order number, and placement.
 - **UR Cobot**: Executes drink delivery actions.
 - **JavaScript Server**: Implements and handles CPEE process endpoints, acting as a communication bridge between the CPEE engine and the hardware interface layer.
 - **CPEE Process Engine**: Manages the process workflow and communicates with the server via HTTP requests.
@@ -54,7 +55,7 @@ The parallel structure ensures continuous order reception while drinks are being
 
 1. **Selecting Ingredients**:
     - Each RFID token corresponds to a drink ingredient.
-    - Toss an RFID token into the reader ring to select an ingredient
+    - Toss an RFID token into the reader ring (input) to select an ingredient
     - Once a token is read, the corresponding ingredient name is displayed on the LED screen.
     - If more than four ingredients are selected, the extra tokens will be ignored.
 
@@ -65,17 +66,17 @@ The parallel structure ensures continuous order reception while drinks are being
     - The system then simulates drink preparation with a 10-second timeout.
 
 3. **Drink Serving**:
-    - The UR cobot places the finished drink at an available position in the pickup station.
+    - The UR cobot places the finished drink at an available position in the pickup station (output).
     - The LED display shows current order numbers at each position (e.g., `0:101, 1: , 2: , 3: `).
     - Once a user picks up the drink, the corresponding position is cleared (e.g., `0: , 1: , 2: , 3: `).
   
 ## Example Interaction
 
-1. User drops 3 RFID tokens into the reader.  
+1. User drops 3 RFID tokens into the reader (input).  
 2. LED screen shows: `Vodka, Lemon Juice, Soda`.  
 3. User presses the green button to confirm.  
 4. LED shows: `Order number: 102` for 10s.  
-5. After the drink is prepared and placed by the UR cobot, the LED updates the serving station status:
+5. After the drink is prepared and placed by the UR cobot (output), the LED updates the serving station status:
    `0:102, 1: , 2: , 3: `  
    (The drink has been placed at position 0).
 
