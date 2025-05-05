@@ -55,7 +55,7 @@ The parallel structure ensures continuous order reception while drinks are being
 
 1. **Selecting Ingredients**:
     - Each RFID token corresponds to a drink ingredient.
-    - Toss an RFID token into the reader ring (input) to select an ingredient
+    - Toss an RFID token into the reader ring (input) to select an ingredient.
     - Once a token is read, the corresponding ingredient name is displayed on the LED screen.
     - If more than four ingredients are selected, the extra tokens will be ignored.
 
