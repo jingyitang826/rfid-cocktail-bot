@@ -7,14 +7,14 @@ This folder contains everything needed to run and assemble the **Input** mechani
 
 ## 1. Introduction
 
-The **Input Module** handles ingredient selection via RFID tags, displays status on an OLED display, and sends button-press and tag data to the server. A SparkFun Simultaneous RFID Reader – M7E Hecto is used for scanning the RFID tags. The RFID reader is wired to an ESP32, which handles the server connection. A red and a green button are also wired to the ESP32. Pressing the green button confirms a cocktail order and sends it to the server; pressing the red button discards the order, allowing a new one to be placed. An OLED display, wired to the ESP32, shows the scanned ingredients and displays the order status. All components are mounted to a 3D-printed basket, which is screwed to a container, as shown in the pictures in the 'Images' folder.
+The **Input Module** handles ingredient selection via RFID tags, displays status on an OLED display, and sends button-press and tag data to the server. A SparkFun Simultaneous RFID Reader – M7E Hecto is used for scanning the RFID tags. The RFID reader is wired to an ESP32, which handles the server connection. A red and a green button are also wired to the ESP32. Pressing the green button confirms a cocktail order and sends it to the server; pressing the red button discards the order, allowing a new one to be placed. An OLED display, wired to the ESP32, shows the scanned ingredients and displays the order status and number. All components are mounted to a 3D-printed basket, which is screwed to a container, as shown in the pictures in the 'Images' folder.
 
 ## 2. Firmware
 
 ### 2.1 File Layout
 
 ```
-/rfid-cocktail-bot/input
+/rfid-cocktail-bot/Input
 ├── Input.cpp        ← ESP32 firmware source
 └── Input_Basket.3mf ← 3D model for the input basket mount
 ```
@@ -85,8 +85,8 @@ const unsigned long uploadInterval = 100;
 ### 3.2 Assembly
 
 1. Screw the printed basket to the bucket lip.
-2. Snap-fit or screw in the RFID reader, OLED, buttons, and ESP32.
-3. Route cables through the integrated clips.
+2. Screw in the RFID reader, OLED, buttons, and ESP32.
+3. Route cables as described below.
 
 ## 4. Wiring & Pin Mapping
 
@@ -109,10 +109,8 @@ const unsigned long uploadInterval = 100;
 
 ## 5. Media & Demo
 
-- Video: `media/input_demo.mp4`
-- Photos: `media/input_*.jpg`
-
-*(Add your files and update paths here.)*
+- Video: /rfid-cocktail-bot/Videos
+- Photos: /rfid-cocktail-bot/Input/Images
 
 ## 6. Troubleshooting
 
