@@ -1,6 +1,6 @@
 ## Overview
 
-`rfid-cocktail-bot` is a smart, interactive cocktail ordering system that integrates RFID token-based ingredient selection, LED-based information displays, a JavaScript server, and a UR cobot for automated drink delivery. The system logic is orchestrated via the CPEE process engine.
+`rfid-cocktail-bot` is a smart, interactive cocktail ordering system that integrates RFID token-based ingredient selection, an ESP32 based Ordering and Pick-Up Station, a JavaScript server, and a UR cobot for automated drink delivery. The system logic is orchestrated via the CPEE process engine.
 
 ## System Architecture
 
