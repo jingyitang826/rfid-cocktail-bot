@@ -5,7 +5,7 @@
 ## System Architecture
 
 - **RFID Tokens**: Represent individual drink ingredients.
-- **LED Display Module**: Shows selected ingredients, confirmed order number, and the status of drink placements.
+- **LED Display Module (Input)**: Shows selected ingredients, confirmed order number, and the status of drink placements.
 - **UR Cobot**: Executes drink delivery actions.
 - **JavaScript Server**: Implements and handles CPEE process endpoints, acting as a communication bridge between the CPEE engine and the hardware interface layer.
 - **CPEE Process Engine**: Manages the process workflow and communicates with the server via HTTP requests.
