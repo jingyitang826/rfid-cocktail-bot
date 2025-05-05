@@ -63,7 +63,7 @@ U8G2_SH1106_128X64_NONAME_F_HW_I2C u8g2(U8G2_R0, /* reset=*/ U8X8_PIN_NONE);
 ### 2.4 Build & Flash
 
 1. Open the project in PlatformIO.  
-2. Upload the firmeware to a ESP32.
+2. Upload the firmeware to an ESP32.
 
 **Hint:** to flash the ESP32, you may have to press and hold the **BOOT** button (depending on your board's config).
 
@@ -78,14 +78,16 @@ U8G2_SH1106_128X64_NONAME_F_HW_I2C u8g2(U8G2_R0, /* reset=*/ U8X8_PIN_NONE);
 ### 3.1 Parts
 
 - **Output_Screen_Mount.3mf**: holds OLED display, four HX711 amplifiers and is used for wiring
-- **Output_Weight_Cell_* parts** (`Lower_Part`, `Spacer`, `Tray`): assemble around each load cell
+- **Output_Weight_Cell_`parts`** (`Lower_Part`, `Spacer`, `Tray`): assemble around each load cell
 
 ### 3.2 Assembly
 
 1. Assemble each load-cell: stack **Lower_Part**, **Spacer**, **Load Cell**, then **Tray**.  
-2. Mount four assemblies in a grid beneath the **Screen_Mount**.  
-3. Snap or screw the OLED into the mount.  HX711 + 
-4. Secure the entire assembly to the bucket or frame.
+2. Mount four amplifiers beneath the **Screen_Mount**.
+3. Mount the ESP32 to the **Screen_Mount**. 
+4. Screw the OLED into the mount.
+5. Wire the assembly as described below.
+6. Connect the weight-cell assemblies to the screen mount. 
 
 ## 4. Wiring & Pin Mapping
 
@@ -108,24 +110,16 @@ U8G2_SH1106_128X64_NONAME_F_HW_I2C u8g2(U8G2_R0, /* reset=*/ U8X8_PIN_NONE);
 ### 4.2 Connector Notes
 
 - Load cells wired via standard Dupont to HX711 modules, then to ESP32.  
-- OLED uses I²C bus.  
+- OLED uses I²C.  
 - All cables are flexible jumper wires; lengths are non-critical.
-
-![Output Wiring Diagram](./images/output_wiring_diagram.png)
 
 ## 5. Media & Demo
 
-- **Video:** `media/output_demo.mp4`  
-- **Photos:** `media/output_*.jpg`  
-
-*(Add your files and update paths here.)*
+- **Video:** All sensor and display lines use standard Dupont cables.
+- **Photos:** ESP32 is powered via USB-C.
 
 ## 6. Troubleshooting
 
 - **No weight detection** → verify DOUT/SCK pin mapping and HX711 initialization.  
 - **HTTP errors** → check `serverName` endpoint and Wi-Fi credentials.  
 - **Blank OLED** → ensure correct I²C pins or pass custom pins to `u8g2` constructor.
-
-> **Next steps:**  
-> - Add **BOM.md** in the main folder when available.  
-> - Upload `./images/` and `./media/` assets.
